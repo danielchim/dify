@@ -580,6 +580,7 @@ services:
 
   # plugin daemon
   plugin_daemon:
+    container_name: dify-plugin-daemon
     image: langgenius/dify-plugin-daemon:0.0.6-local
     restart: always
     environment:
@@ -635,6 +636,7 @@ services:
     networks:
       - ssrf_proxy_network
       - default
+      - dokploy-network
 
   # Certbot service
   # use `docker-compose --profile certbot up` to start the certbot service.
