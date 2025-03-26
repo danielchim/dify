@@ -455,7 +455,6 @@ services:
       - ./volumes/app/storage:/app/api/storage
     networks:
       - ssrf_proxy_network
-      - default
       - dokploy-network
     labels:
       - "traefik.enable=true"
@@ -487,7 +486,7 @@ services:
       - ./volumes/app/storage:/app/api/storage
     networks:
       - ssrf_proxy_network
-      - default
+      - dokploy-network
 
   # Frontend web application.
   web:
@@ -510,13 +509,10 @@ services:
       MAX_TOOLS_NUM: ${MAX_TOOLS_NUM:-10}
       MAX_PARALLEL_LIMIT: ${MAX_PARALLEL_LIMIT:-10}
     networks:
-      - default
       - dokploy-network
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dify-web.rule=Host(`console.dify.hsubadcat.xyz`) && (PathPrefix(`/explore`) || Path(`/`))"
-      - "traefik.http.routers.dify-web.entrypoints=websecure"
-      - "traefik.http.routers.dify-web.tls=true"
       - "traefik.http.services.dify-web.loadbalancer.server.port=3000"
 
   # The postgres database.
@@ -608,13 +604,10 @@ services:
     depends_on:
       - db
     networks:
-      - default
       - dokploy-network
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dify-plugin.rule=Host(`console.dify.hsubadcat.xyz`) && PathPrefix(`/e/`)"
-      - "traefik.http.routers.dify-plugin.entrypoints=websecure"
-      - "traefik.http.routers.dify-plugin.tls=true"
       - "traefik.http.services.dify-plugin.loadbalancer.server.port=5002"
 
   # ssrf_proxy server
@@ -636,7 +629,6 @@ services:
       SANDBOX_PORT: ${SANDBOX_PORT:-8194}
     networks:
       - ssrf_proxy_network
-      - default
       - dokploy-network
 
   # Certbot service
